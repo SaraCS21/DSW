@@ -3,9 +3,9 @@
     $cadena_enteros = readline("Diga una cadena de valores enteros separados por comas: ");
     $array_enteros = explode(",", $cadena_enteros);
     $cadena_nueva = "";
+    $i = 0;
 
-    for ($i=0; $i<=count($array_enteros); $i++){
-
+    while ($i <= count($array_enteros)){
         $salto = $array_enteros[$i];
         $cadena_nueva .= $array_enteros[$i] . "," . str_repeat("_,", $salto);
 
@@ -13,11 +13,8 @@
             break;
         };
 
-        $i += $salto;
+        $i += $salto + 1;
     };
 
-    echo $cadena_nueva;
-
+    echo $cadena_nueva
 ?>
-
-// HACER CON WHILE
