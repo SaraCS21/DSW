@@ -29,9 +29,6 @@
     function comprobar_ganador($tablero){
         $ganador = false;
         $gana_jugador = 0;
-        
-        $contX = 0;
-        $contO = 0;
 
         for ($pos_fila = 0; $pos_fila < 3; $pos_fila++){
             // Comprobación horizontal
@@ -45,28 +42,19 @@
                 break;
             };
 
-            // for ($pos_columna = 0; $pos_columna < 3; $pos_columna++){
+            for ($pos_columna = 0; $pos_columna < 3; $pos_columna++){
                 
-            //     // Comprobación vertical
-            //     if ($tablero[$pos_fila][$pos_columna] == "X"){
-            //         $contX++;
-            //     } else if ($tablero[$pos_fila][$pos_columna] == "O"){
-            //         $contO++;
-            //     };
-
-            //     if ($contX === 3){
-            //         $gana_jugador = 1;
-            //         $ganador = true;
-            //         break;
-            //     } else if ($contO === 3){
-            //         $gana_jugador = 2;
-            //         $ganador = true;
-            //         break;
-            //     };
-            // };
-
-            // $contX = 0;
-            // $contO = 0;
+                // Comprobación vertical
+                if (($tablero[0][$pos_columna] == "X") && ($tablero[1][$pos_columna] == "X") && ($tablero[2][$pos_columna] == "X")){
+                    $gana_jugador = 1;
+                    $ganador = true;
+                    break;
+                } else if (($tablero[0][$pos_columna] == "O") && ($tablero[1][$pos_columna] == "O") && ($tablero[2][$pos_columna] == "O")){
+                    $gana_jugador = 2;
+                    $ganador = true;
+                    break;
+                };
+            };
         };
 
         // Comprobación diagonales
