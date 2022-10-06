@@ -1,16 +1,13 @@
 <?php 
-
     function jugada($tablero, $mov){
-        $jugador1 = "X";
-        $jugador2 = "O";
         $fila = readline("Diga la fila: ") - 1;
         $columna = readline("Diga la columna: ") - 1;
 
         if ($tablero[$fila][$columna] === "-"){
             if ($mov % 2 === 0){
-                $tablero[$fila][$columna] = $jugador1;
+                $tablero[$fila][$columna] = "X";
             } else {
-                $tablero[$fila][$columna] = $jugador2;
+                $tablero[$fila][$columna] = "O";
             };
             $mov++;
         } else {
@@ -29,31 +26,27 @@
     function comprobar_ganador($tablero){
         $ganador = false;
         $gana_jugador = 0;
-
-        for ($pos_fila = 0; $pos_fila < 3; $pos_fila++){
+        
+        for ($pos = 0; $pos < 3; $pos++){
             // Comprobación horizontal
-            if (count(array_keys($tablero[$pos_fila], "X")) === 3){
+            if (count(array_keys($tablero[$pos], "X")) === 3){
                 $gana_jugador = 1;
                 $ganador = true;
                 break;
-            } else if (count(array_keys($tablero[$pos_fila], "O")) === 3){
+            } else if (count(array_keys($tablero[$pos], "O")) === 3){
                 $gana_jugador = 2;
                 $ganador = true;
                 break;
             };
-
-            for ($pos_columna = 0; $pos_columna < 3; $pos_columna++){
-                
-                // Comprobación vertical
-                if (($tablero[0][$pos_columna] == "X") && ($tablero[1][$pos_columna] == "X") && ($tablero[2][$pos_columna] == "X")){
-                    $gana_jugador = 1;
-                    $ganador = true;
-                    break;
-                } else if (($tablero[0][$pos_columna] == "O") && ($tablero[1][$pos_columna] == "O") && ($tablero[2][$pos_columna] == "O")){
-                    $gana_jugador = 2;
-                    $ganador = true;
-                    break;
-                };
+            // Comprobación vertical
+            if (($tablero[0][$pos] == "X") && ($tablero[1][$pos] == "X") && ($tablero[2][$pos] == "X")){
+                $gana_jugador = 1;
+                $ganador = true;
+                break;
+            } else if (($tablero[0][$pos] == "O") && ($tablero[1][$pos] == "O") && ($tablero[2][$pos] == "O")){
+                $gana_jugador = 2;
+                $ganador = true;
+                break;
             };
         };
 
@@ -106,5 +99,4 @@
     };
 
     tres_en_raya();
-
 ?>
