@@ -1,0 +1,1 @@
+Para poder visualizar el error en el check tenemos que ir a php.ini y cambiar el display_errors a Off.
