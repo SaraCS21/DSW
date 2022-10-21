@@ -1,0 +1,25 @@
+h4, .h4{
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+label, p{
+    font-size: 0.7rem;
+}
+
+div{
+    width: 32%;
+}
+
+.date{
+    width: 20%;
+    margin: 1%;
+}
+
+span{
+    color: red;
+}
+
+.final{
+    width: 45%;
+}
