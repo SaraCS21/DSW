@@ -8,6 +8,15 @@
 </head>
 <body class="d-flex flex-column justify-content-center align-items-center mt-5 w-100">
 
+    <!-- Hacemos uso de strip_tags() para que, si me intentan pasar una etiqueta
+        HTML, indicar que eso no lo queremos y nos lo elimine. -->
+
+    <!-- Hacemos uso de trim() para que, en caso de que me pasen caracteres en blanco,
+        indicar que eso no lo queremos y nos lo elimine. -->
+
+    <!-- Hacemos uso de str_replace() para que, en caso de que me pasen un &,
+        indicar que eso no lo queremos y nos lo cambie por un and. -->
+
     <?php
 
         $claves = ["name1", "name2", "surname", "year", "month", "day", "direction", "dni", "city", "email", "phone", "sexo", "info"];
@@ -27,23 +36,17 @@
             $datos = $_POST;
     
             echo "<tr>";
-            // foreach(array_keys($datos) as $clave){
-            //     echo "<td>$clave</td>";
-            // }
     
             $keys = array_keys($datos);
             for ($i=0; $i < count($keys); $i++) { 
-                echo "<td>$keys[$i]</td>";
+                echo "<td>" . str_replace("&", "and", trim(strip_tags($keys[$i]))) . "</td>";
             }
     
             echo "</tr><tr>";
-            // foreach($datos as $valor){
-            //     echo "<td>$valor</td>";
-            // }
     
             for ($j=0; $j < count($datos); $j++) { 
                 $variable = $keys[$j];
-                echo "<td>$datos[$variable]</td>";
+                echo "<td>" . str_replace("&", "and", trim(strip_tags($datos[$variable]))) . "</td>";
             }
     
             echo "</tr>";
