@@ -17,7 +17,8 @@
         la clave como del elemento almacenado. -->
 
         <?php
-            $r = [range(7, 11)];
+            echo "<pre>";
+            $r = range(7, 11);
             // print_r($r);
         ?>
 
@@ -27,6 +28,7 @@
         <?php
             // print_r($r);
             // print_r(shuffle($r));  // Mezcla un array y devuelve true o false dependiendo de si pudo hacerlo
+            // echo "<br>";
             // print_r($r);
         ?>
 
@@ -120,8 +122,9 @@
         realiza esta función. -->
 
         <?php
-            // $zz1 = array_slice($a, 3);     // Elimina los valores del array dentro del rango establecido (los 3 primeros en este caso)
-            // print_r($zz1);
+        // print_r($a);
+        //     $zz1 = array_slice($a, 3);     // Elimina los valores del array dentro del rango establecido (los 3 primeros en este caso)
+        //     print_r($zz1);
         ?>
 
         <!-- 12. Utilizando la misma función que en el punto 11, teniendo como segundo parámetro un -3 y 
@@ -129,6 +132,7 @@
         caso la función. -->
 
         <?php
+            // print_r($a);
             // $zz2 = array_slice($a, -3);     // Elimina los valores del array fuera del rango establecido (conserva los 3 últimos)
             // print_r($zz2);
         ?>
@@ -138,32 +142,40 @@
         de $zz3. ¿Qué es lo que ha hecho ahora la función? -->
 
         <?php
-            // $zz3 = array_slice($b, 3, 4);     // Hace un subarray desde la posición 3 hasta la 4.
-            // print_r($zz3);
+        // print_r($b);
+        //     $zz3 = array_slice($b, 3, 4);     // Hace un subarray desde la posición 3 hasta la 4.
+        //     print_r($zz3);
+        //     print_r($b);
         ?>
 
         <!-- 14. Utilizando la misma función del punto 11, y almacenando el resultado en $zz4, y pasando 
         como parámetros $b, 3 y -2, muestra el resultado e indica que ha ocurrido en este caso. -->
 
         <?php
-            // $zz4 = array_slice($b, 3, -2);     // Hace un subarray desde la posición 3 hasta la -2.
-            // print_r($zz4);
+        // print_r($b);
+        //     $zz4 = array_slice($b, 3, -2);     // Hace un subarray desde la posición 3 hasta la -2.
+        //     print_r($zz4);
         ?>
 
         <!-- 15. Utilizando la misma función del punto 11, y almacenando el resultado en $zz5, y pasando 
         como parámetros $b, -5 y -2, muestra el resultado e indica que ha ocurrido en este caso. -->
 
         <?php
-            // $zz5 = array_slice($b, -5, -2);     // Hace un subarray desde la posición -5 hasta la -2.
-            // print_r($zz5);
+        // print_r($b);
+        //     $zz5 = array_slice($b, -5, -2);     // Hace un subarray desde la posición -5 hasta la -2.
+        //     print_r($zz5);
         ?>
 
-        <!-- Pasando como parámetro $c a la función “array_reverse”, almacena su resultado en 
+        <!-- 16. Pasando como parámetro $c a la función “array_reverse”, almacena su resultado en 
         $inv, muestra el resultado clave-valor e indica qué realiza la misma. -->
 
         <?php
             $inv = array_reverse($c);       // Invierte un array
             print_r($inv);
+        ?>
+
+        <?php
+            echo "</pre>";
         ?>
 
     </body>
