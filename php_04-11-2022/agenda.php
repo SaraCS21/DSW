@@ -2,7 +2,8 @@
     require "./parts/header.php";
     require "./parts/footer.php";
     require "./parts/title.php";
-    require "./parts/insert.php";
+    require "./parts/options.php";
+    require "./functions/functions.php";
 ?>
 
 <?= createHeader("Agenda") ?>
@@ -50,22 +51,24 @@
                     insert($url);
                     break;
                 case "update":
-                    echo "hola";
+                    update($url);
                     break;
-                case "update":
-                    echo "hola";
+                case "block":
+                    block($url);
                     break;
                 case "show":
-                    echo "hola";
+                    show($url);
                     break;
                 case "upload":
-                    echo "hola";
+                    upload($url);
                     break;
                 default:
                     break;
             }
         }
     }
+
+    validate($_POST);
 ?>
 
 <?= createFooter() ?>
