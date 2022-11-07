@@ -1,5 +1,6 @@
 <?php
-    function createHeader($title){
+    function createHeader($title, $url, $contacts){
+        $json_contacts = json_encode($contacts);
         print <<<END
             <head>
                 <title>$title</title>
@@ -11,6 +12,36 @@
             </head>
 
             <body>
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+                <form method="post" action="$url"> 
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <input type="submit" name="insert" value="Insertar un contacto" class="btn btn-outline-primary me-3">                        
+                                </li>
+                                <li class="nav-item">
+                                    <input type="submit" name="update" value="Actualizar datos del usuario" class="btn btn-outline-primary me-3">                        
+                                </li>
+                                <li class="nav-item">
+                                    <input type="submit" name="block" value="Bloquear un contacto" class="btn btn-outline-primary me-3">                        
+                                </li>
+                                <li class="nav-item">
+                                    <input type="submit" name="show" value="Mostrar todos los contactos" class="btn btn-outline-primary me-3">                        
+                                </li>
+                                <li class="nav-item">
+                                    <input type="submit" name="upload" value="Subir datos extras" class="btn btn-outline-primary me-3">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="hidden" name="contacts" value="$json_contacts">
+                </form>
+            </nav>
 
         END;
     }

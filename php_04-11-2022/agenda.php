@@ -6,36 +6,11 @@
     require "./functions/functions.php";
 ?>
 
-<?= createHeader("Agenda") ?>
+<?php
+    $contacts = isset($_POST["contacts"]) ? json_decode($_POST["contacts"], true) : [];
+?>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-    <form method="post" action="<?= $_SERVER['PHP_SELF']; ?>"> 
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <input type="submit" name="insert" value="Insertar un contacto" class="btn btn-outline-primary me-3">                        
-                    </li>
-                    <li class="nav-item">
-                        <input type="submit" name="update" value="Actualizar datos del usuario" class="btn btn-outline-primary me-3">                        
-                    </li>
-                    <li class="nav-item">
-                        <input type="submit" name="block" value="Bloquear un contacto" class="btn btn-outline-primary me-3">                        
-                    </li>
-                    <li class="nav-item">
-                        <input type="submit" name="show" value="Mostrar todos los contactos" class="btn btn-outline-primary me-3">                        
-                    </li>
-                    <li class="nav-item">
-                        <input type="submit" name="upload" value="Subir datos extras" class="btn btn-outline-primary me-3">
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </form>
-</nav>
+<?= createHeader("Agenda", $_SERVER['PHP_SELF'], $contacts) ?>
 
 <?php
     $keys = ["insert", "update", "block", "show", "upload"];
@@ -48,7 +23,7 @@
 
             switch($key) {
                 case "insert": 
-                    insert($url);
+                    insert($url, $_POST["contacts"]);
                     break;
                 case "update":
                     update($url);
@@ -68,7 +43,7 @@
         }
     }
 
-    validate($_POST);
+    validate($_POST, $contacts);
 ?>
 
 <?= createFooter() ?>

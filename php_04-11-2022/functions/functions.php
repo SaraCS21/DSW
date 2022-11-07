@@ -81,7 +81,7 @@
         $stop = false;
 
         unset($insert_values["submit_insert"]);
-        $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email"];
+        $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email", "contacts"];
 
         for ($k = 0; $k < count($keys_insert); $k++){
             $key_insert = $keys_insert[$k];
@@ -105,22 +105,25 @@
         return false;
     }
 
-    function validate($insert_values){
+    function validate($insert_values, &$contacts){
         $keys = array_keys($insert_values);
         
         if (in_array("submit_insert", $keys)){
-            
             if (comprobe_insert($insert_values, $keys)) {
-                $contact = array(
-                    "dni" => trim(strip_tags($insert_values["dni"])),
+
+                $contact_value = [
                     "name" => trim(strip_tags($insert_values["name"])),
                     "surname" => trim(strip_tags($insert_values["surname"])),
                     "phone" => trim(strip_tags($insert_values["phone"])),
                     "birth_date" => trim(strip_tags($insert_values["birth_date"])),
                     "email" => trim(strip_tags($insert_values["email"]))
-                );
+                ]; 
 
-                print_r($contact);
+                $contacts[trim(strip_tags($insert_values["dni"]))] = $contact_value;
+
+                // $contacts[$dni] = json_encode(...$contact_value);
+
+                print_r($contacts);
             }
 
         } else if (in_array("submit_update", $keys)){

@@ -1,6 +1,6 @@
 <?php
 
-    function insert($url){
+    function insert($url, $json_contacts){
         print <<<END
             <form method="post" action="$url" class="w-50">
                 <div class="mb-3">
@@ -30,6 +30,7 @@
                 <div class="mb-3">
                     <input type="submit" class="btn btn-primary" name="submit_insert" value="Enviar">
                 </div>
+                <input type="hidden" name="contacts" value="$json_contacts">
             </form>
         END;
     }
