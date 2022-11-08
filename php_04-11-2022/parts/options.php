@@ -1,8 +1,10 @@
 <?php
 
     function insert($url, $json_contacts){
+
+        createTitle("Insertar un contacto");
         print <<<END
-            <form method="post" action="$url" class="w-50">
+            <form method="get" action="$url" class="w-50">
                 <div class="mb-3">
                     <label for="dni" class="form-label">DNI</label>
                     <input type="text" class="form-control" id="dni" name="dni">
@@ -33,6 +35,7 @@
                 <input type="hidden" name="contacts" value="$json_contacts">
             </form>
         END;
+        
     }
 
     function update($url){

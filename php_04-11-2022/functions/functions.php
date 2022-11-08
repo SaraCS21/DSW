@@ -86,7 +86,8 @@
         for ($k = 0; $k < count($keys_insert); $k++){
             $key_insert = $keys_insert[$k];
 
-            if (!isset($_POST["$key_insert"]) || count(array_diff(array_keys($insert_values), $keys_insert)) !== 0 || empty($_POST["$key_insert"])){
+            // || empty($_REQUEST["$key_insert"])
+            if (!isset($_REQUEST["$key_insert"]) || count(array_diff(array_keys($insert_values), $keys_insert)) !== 0){
                 echo "<p>Datos incorrectos</p>";
                 $stop = true;
             }
@@ -121,9 +122,7 @@
 
                 $contacts[trim(strip_tags($insert_values["dni"]))] = $contact_value;
 
-                // $contacts[$dni] = json_encode(...$contact_value);
-
-                print_r($contacts);
+                //$contacts[$dni] = json_encode(...$contact_value);
             }
 
         } else if (in_array("submit_update", $keys)){
@@ -135,6 +134,15 @@
         } else if (in_array("submit_upload", $keys)){
             
         }
+    }
+
+    function return_contacts($values, $contacts){
+        validate($values, $contacts);
+
+        $contacts = json_encode($contacts);
+        print_r($contacts);
+
+        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
     }
 
 ?>
