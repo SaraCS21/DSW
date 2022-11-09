@@ -77,17 +77,17 @@
         }
     }
 
-    function comprobe_insert($insert_values, $keys){
+    function comprobe_insert($keys){
         $stop = false;
 
-        unset($insert_values["submit_insert"]);
-        $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email", "contacts"];
+        unset($_REQUEST["submit_insert"]);
+        $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email", "insert_date", "contacts"];
 
         for ($k = 0; $k < count($keys_insert); $k++){
             $key_insert = $keys_insert[$k];
 
             // || empty($_REQUEST["$key_insert"])
-            if (!isset($_REQUEST["$key_insert"]) || count(array_diff(array_keys($insert_values), $keys_insert)) !== 0){
+            if (!isset($_REQUEST["$key_insert"]) || count(array_diff(array_keys($_REQUEST), $keys_insert)) !== 0){
                 echo "<p>Datos incorrectos</p>";
                 $stop = true;
             }
@@ -95,7 +95,7 @@
 
         if (!$stop){
 
-            if (!validate_dni($insert_values["dni"]) || !validate_phone($insert_values["phone"]) || !validate_birth_date($insert_values["birth_date"]) || !validate_email($insert_values["email"])){
+            if (!validate_dni($_REQUEST["dni"]) || !validate_phone($_REQUEST["phone"]) || !validate_birth_date($_REQUEST["birth_date"]) || !validate_email($_REQUEST["email"])){
                 echo "<p>Datos incorrectos</p>";
 
             } else {
@@ -106,23 +106,45 @@
         return false;
     }
 
-    function validate($insert_values, &$contacts){
-        $keys = array_keys($insert_values);
+    function insert_date(){
+
+        date_default_timezone_set("Atlantic/Canary");
+        $now = new DateTime();
+
+        // Definimos antes el AM o PM, porque con el "setLocale" da fallo
+        $final_value = strftime("%p", date_timestamp_get($now));
+        setLocale(LC_ALL, "es", "ES", "es_ES.UTF-8");
+    
+        // utf8_encode -> para evitar problemas con los carácteres especiales
+        $time = utf8_encode(strftime("%A, %d de %B de %Y, %H:%M ", date_timestamp_get($now)));
+    
+        // Preguntas a Mariola
+        return "hola";
+        //return $time . $final_value;
+    }
+
+    function validate(&$contacts){
+        $keys = array_keys($_REQUEST);
         
         if (in_array("submit_insert", $keys)){
-            if (comprobe_insert($insert_values, $keys)) {
+            if (comprobe_insert($keys)) {
 
                 $contact_value = [
-                    "name" => trim(strip_tags($insert_values["name"])),
-                    "surname" => trim(strip_tags($insert_values["surname"])),
-                    "phone" => trim(strip_tags($insert_values["phone"])),
-                    "birth_date" => trim(strip_tags($insert_values["birth_date"])),
-                    "email" => trim(strip_tags($insert_values["email"]))
+                    "name" => trim(strip_tags($_REQUEST["name"])),
+                    "surname" => trim(strip_tags($_REQUEST["surname"])),
+                    "phone" => trim(strip_tags($_REQUEST["phone"])),
+                    "birth_date" => trim(strip_tags($_REQUEST["birth_date"])),
+                    "email" => trim(strip_tags($_REQUEST["email"])),
+                    "insert_date" => insert_date()
                 ]; 
 
-                $contacts[trim(strip_tags($insert_values["dni"]))] = $contact_value;
+                $contacts[trim(strip_tags($_REQUEST["dni"]))] = $contact_value;
 
-                //$contacts[$dni] = json_encode(...$contact_value);
+                print_r($contacts);
+
+            } else {
+
+                echo "<p>Datos incorrectos</p>";
             }
 
         } else if (in_array("submit_update", $keys)){
@@ -136,13 +158,19 @@
         }
     }
 
-    function return_contacts($values, $contacts){
-        validate($values, $contacts);
+    // function test($agenda){
+    //     echo '<pre>';
+    //     print_r($agenda);
+    //     echo '</pre>';
+    // }
 
+    function return_contacts($contacts){
+        validate($contacts);
+
+        //test($contacts);
         $contacts = json_encode($contacts);
-        print_r($contacts);
 
-        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
+        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts );
     }
 
 ?>

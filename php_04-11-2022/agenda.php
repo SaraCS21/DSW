@@ -16,12 +16,11 @@
     $keys = ["insert", "update", "block", "show", "upload", "contacts"];
     $url = $_SERVER['PHP_SELF']; 
 
-    $contacts = $_REQUEST["contacts"];
-    print_r($contacts);
-
     if (isset($_REQUEST["dni"])){
-        print("hola");
-        return_contacts($_REQUEST, $json_contacts);
+        return_contacts($contacts);
+
+    } else if (isset($_REQUEST["organize"])) {
+        show($url, $contacts, $_REQUEST["select"]);
 
     } else {
         for ($k = 0; $k < count($keys); $k++){
@@ -39,7 +38,7 @@
                         block($url);
                         break;
                     case "show":
-                        show($url);
+                        show($url, $contacts);
                         break;
                     case "upload":
                         upload($url);
