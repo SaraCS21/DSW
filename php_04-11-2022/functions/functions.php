@@ -153,7 +153,6 @@
     }
 
     function validate_files(){
-
         if (is_uploaded_file($_FILES["file"]["tmp_name"])){
             if ($_FILES['file']['type'] === "application/pdf" || $_FILES['file']['type'] === "application/odt"){
                 $name = $_FILES["file"]["name"];
