@@ -34,6 +34,7 @@
                     <input type="submit" class="btn btn-primary" name="submit_insert" value="Enviar">
                 </div>
                 <input type="hidden" name="insert_date" value="">
+                <input type="hidden" name="block" value="">
                 <input type="hidden" name="contacts" value=$vectorString>
             </form>
         END;
@@ -41,10 +42,6 @@
 
     function update($url){
 
-    }
-
-    function block($url){
-        
     }
 
     function show($url, $contacts, $option = ""){
@@ -85,25 +82,54 @@
                 <th>Fecha de nacimiento</th>
                 <th>Correo electrónico</th>
                 <th>Fecha de inserción</th>
+                <th></th>
+                <th>Otras acciones</th>
             </tr>
         END;
 
         foreach ($contacts as $key => $contact) {
-            echo "<tr>";
-            
-            echo "<td>$key</td>";
+            if (!$contact["block"]){
 
-            foreach ($contact as $value) {
-                echo "<td>$value</td>";
-
+                echo "<tr>";
+                echo "<td>$key</td>";
+                $contact["insert_date"] = format_date($contact["insert_date"]);
+    
+                foreach ($contact as $value) {
+                    echo "<td>$value</td>";
+                }
+                print <<<END
+                    <td>
+                        <form method="get" action=$url> 
+                            <input type="submit" name="update" value="Actualizar" class="btn btn-outline-primary me-3">                        
+                            <input type="submit" name="block" value="Bloquear" class="btn btn-outline-primary me-3">                        
+                            <input type="submit" name="upload" value="Subir datos extras" class="btn btn-outline-primary me-3">
+                            <input type="hidden" name="dni_active" value=$key>    
+                            <input type="hidden" name="contacts" value=$vectorString>                    
+                        </form>
+                    </td>
+                END;
+                echo "</tr>";
             }
-            echo "</tr>";
         }
         echo "</table>";
     }
 
-    function upload($url){
-        
+    function upload($url, $contacts, $dni){
+        createTitle("Subir un fichero");
+        $vectorString = json_encode($contacts);
+
+        print <<<END
+            <form method="post" action=$url class="w-50" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Fichero</label>
+                    <input type="file" class="form-control" id="file" name="file">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="1000000" />
+                    <input type="submit" name="upload_file" value="Enviar" class="btn btn-outline-primary me-3">                        
+                </div>
+                <input type="hidden" name="dni_active" value=$dni>    
+                <input type="hidden" name="contacts" value=$vectorString>
+            </form>
+        END;
     }
 
 ?>

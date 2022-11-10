@@ -81,7 +81,7 @@
         $stop = false;
 
         unset($_REQUEST["submit_insert"]);
-        $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email", "insert_date", "contacts"];
+        $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email", "insert_date", "block", "contacts"];
 
         for ($k = 0; $k < count($keys_insert); $k++){
             $key_insert = $keys_insert[$k];
@@ -107,20 +107,22 @@
     }
 
     function insert_date(){
-
         date_default_timezone_set("Atlantic/Canary");
         $now = new DateTime();
 
+        return date_timestamp_get($now);
+    }
+
+    function format_date($date){
         // Definimos antes el AM o PM, porque con el "setLocale" da fallo
-        $final_value = strftime("%p", date_timestamp_get($now));
+        $final_value = strftime("%p", $date);
         setLocale(LC_ALL, "es", "ES", "es_ES.UTF-8");
-    
+
         // utf8_encode -> para evitar problemas con los carácteres especiales
-        $time = utf8_encode(strftime("%A, %d de %B de %Y, %H:%M ", date_timestamp_get($now)));
-    
-        // Preguntas a Mariola
-        return "hola";
-        //return $time . $final_value;
+        $time = utf8_encode(strftime("%A, %d de %B de %Y, %H:%M ", $date));
+
+        // ucfirst -> para poner el primer caracter en mayúscula
+        return ucfirst($time . $final_value);
     }
 
     function validate(&$contacts){
@@ -135,7 +137,8 @@
                     "phone" => trim(strip_tags($_REQUEST["phone"])),
                     "birth_date" => trim(strip_tags($_REQUEST["birth_date"])),
                     "email" => trim(strip_tags($_REQUEST["email"])),
-                    "insert_date" => insert_date()
+                    "insert_date" => insert_date(),
+                    "block" => false
                 ]; 
 
                 $contacts[trim(strip_tags($_REQUEST["dni"]))] = $contact_value;
@@ -146,16 +149,22 @@
 
                 echo "<p>Datos incorrectos</p>";
             }
+        } 
+    }
 
-        } else if (in_array("submit_update", $keys)){
+    function validate_files(){
 
-        } else if (in_array("submit_block", $keys)){
-            
-        } else if (in_array("submit_show", $keys)){
-            
-        } else if (in_array("submit_upload", $keys)){
-            
+        if (is_uploaded_file($_FILES["file"]["tmp_name"])){
+            if ($_FILES['file']['type'] === "application/pdf" || $_FILES['file']['type'] === "application/odt"){
+                $name = $_FILES["file"]["name"];
+                move_uploaded_file($_FILES["file"]["tmp_name"], "./files/$name");
+            }
         }
+    }
+
+    function block($url, $contacts, $dni){
+        $contacts[$dni]["block"] = true;
+        return_contacts($contacts);
     }
 
     // function test($agenda){
@@ -171,6 +180,13 @@
         $contacts = json_encode($contacts);
 
         header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts );
+    }
+
+    function almacenar_fichero($url, $contacts, $dni){
+        validate_files();
+
+        $contacts[$dni]["file"] = $_FILES["file"]["name"];
+        return_contacts($contacts);
     }
 
 ?>
