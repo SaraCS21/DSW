@@ -25,9 +25,6 @@
                                     <input type="submit" name="insert" value="Insertar un contacto" class="btn btn-outline-primary me-3">                        
                                 </li>
                                 <li class="nav-item">
-                                    <input type="submit" name="update" value="Actualizar datos del usuario" class="btn btn-outline-primary me-3">                        
-                                </li>
-                                <li class="nav-item">
                                     <input type="submit" name="show" value="Mostrar todos los contactos" class="btn btn-outline-primary me-3">                        
                                 </li>
                             </ul>

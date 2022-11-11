@@ -31,6 +31,12 @@
     } else if (isset($_FILES["file"])) {
         almacenar_fichero($url, $contacts, $_REQUEST["dni_active"]);
 
+    } else if (isset($_REQUEST["update"])) {
+        update($url, $contacts, $_REQUEST["dni_active"]);
+
+    } else if (isset($_REQUEST["update_insert"])) {
+        modifiy_values($url, $contacts);
+
     } else {
         for ($k = 0; $k < count($keys); $k++){
             $key = $keys[$k];
@@ -40,10 +46,8 @@
                     case "insert": 
                         insert($url, $contacts);
                         break;
-                    case "update":
-                        update($url);
-                        break;
                     case "show":
+                        // var_dump($_REQUEST);
                         show($url, $contacts);
                         break;
                     default:
@@ -52,7 +56,6 @@
             }
         }
     }
-
 ?>
 
 <?= createFooter() ?>

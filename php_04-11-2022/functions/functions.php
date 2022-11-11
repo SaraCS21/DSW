@@ -131,9 +131,13 @@
         if (in_array("submit_insert", $keys)){
             if (comprobe_insert($keys)) {
 
+                // Al pasar parámetros con espacios y enviarlos por url hay pérdida de información.
+                // Cambio los posibles espacios que me puedan llegar por "_" y más adelante los vuelvo a pasar a espacios.
                 $contact_value = [
-                    "name" => trim(strip_tags($_REQUEST["name"])),
-                    "surname" => trim(strip_tags($_REQUEST["surname"])),
+                    "name" => str_replace(" ", "_", trim(strip_tags($_REQUEST["name"]))),
+                    //"name" => trim(strip_tags($_REQUEST["name"])),
+                    "surname" => str_replace(" ", "_", trim(strip_tags($_REQUEST["surname"]))),
+                    //"surname" => trim(strip_tags($_REQUEST["surname"])),
                     "phone" => trim(strip_tags($_REQUEST["phone"])),
                     "birth_date" => trim(strip_tags($_REQUEST["birth_date"])),
                     "email" => trim(strip_tags($_REQUEST["email"])),
@@ -143,10 +147,7 @@
 
                 $contacts[trim(strip_tags($_REQUEST["dni"]))] = $contact_value;
 
-                print_r($contacts);
-
             } else {
-
                 echo "<p>Datos incorrectos</p>";
             }
         } 
@@ -166,19 +167,12 @@
         return_contacts($contacts);
     }
 
-    // function test($agenda){
-    //     echo '<pre>';
-    //     print_r($agenda);
-    //     echo '</pre>';
-    // }
-
     function return_contacts($contacts){
         validate($contacts);
 
-        //test($contacts);
         $contacts = json_encode($contacts);
 
-        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts );
+        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
     }
 
     function almacenar_fichero($url, $contacts, $dni){
@@ -186,6 +180,25 @@
 
         $contacts[$dni]["file"] = $_FILES["file"]["name"];
         return_contacts($contacts);
+    }
+
+    function modifiy_values($url, $contacts){
+        $contact_value = [
+            "name" => str_replace(" ", "_", trim(strip_tags($_REQUEST["update_name"]))),
+            //"name" => trim(strip_tags($_REQUEST["update_name"])),
+            "surname" => str_replace(" ", "_", trim(strip_tags($_REQUEST["update_surname"]))),
+            //"surname" => trim(strip_tags($_REQUEST["update_surname"])),
+            "phone" => trim(strip_tags($_REQUEST["update_phone"])),
+            "birth_date" => trim(strip_tags($_REQUEST["update_birth_date"])),
+            "email" => trim(strip_tags($_REQUEST["update_email"])),
+            "insert_date" => insert_date(),
+            "block" => false
+        ]; 
+
+        $contacts[trim(strip_tags($_REQUEST["update_dni"]))] = $contact_value;
+        $contacts = json_encode($contacts);
+
+        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
     }
 
 ?>

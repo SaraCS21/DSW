@@ -40,10 +40,6 @@
         END;
     }
 
-    function update($url){
-
-    }
-
     function show($url, $contacts, $option = ""){
         createTitle("Mostrar todos los contactos");
         $vectorString = json_encode($contacts);
@@ -52,10 +48,14 @@
             ksort($contacts);
 
         } else if ($option === "organize_name"){
-            // no se
+            uasort($contacts, function ($a, $b) {
+                return strcmp($a["name"], $b["name"]);
+            });
 
         } else if ($option === "organize_surname"){
-            // no se
+            uasort($contacts, function ($a, $b) {
+                return strcmp($a["surname"], $b["surname"]);
+            });
         }
 
         print <<<END
@@ -71,7 +71,7 @@
             </form>
         END;
 
-        echo "<table  class='table table-striped w-50 mt-3'>";
+        echo "<table class='table table-striped w-50 mt-3'>";
 
         print <<<END
             <tr>
@@ -87,12 +87,16 @@
             </tr>
         END;
 
+
         foreach ($contacts as $key => $contact) {
             if (!$contact["block"]){
 
                 echo "<tr>";
                 echo "<td>$key</td>";
+
                 $contact["insert_date"] = format_date($contact["insert_date"]);
+                $contact["name"] = str_replace("_", " ", $contact["name"]);
+                $contact["surname"] = str_replace("_", " ", $contact["surname"]);
     
                 foreach ($contact as $value) {
                     echo "<td>$value</td>";
@@ -119,7 +123,7 @@
         $vectorString = json_encode($contacts);
 
         print <<<END
-            <form method="post" action=$url class="w-50" enctype="multipart/form-data">
+            <form method="get" action=$url class="w-50" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="file" class="form-label">Fichero</label>
                     <input type="file" class="form-control" id="file" name="file">
@@ -130,6 +134,53 @@
                 <input type="hidden" name="contacts" value=$vectorString>
             </form>
         END;
+    }
+
+    function update($url, $contacts, $dni){
+        createTitle("Actualizar contacto");
+
+        $update_contact = $contacts[$dni];
+        $name = $update_contact["name"];
+        $surname = $update_contact["surname"];
+        $phone = $update_contact["phone"];
+        $birth_date = $update_contact["birth_date"];
+        $email = $update_contact["email"];
+
+        $vectorString = json_encode($contacts);
+
+        print <<<END
+            <form method="get" action=$url class="w-50">
+                <div class="mb-3">
+                    <label for="update_dni" class="form-label">DNI</label>
+                    <input type="text" class="form-control" id="update_dni" name="update_dni" value=$dni>
+                </div>
+                <div class="mb-3">
+                    <label for="update_name" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="update_name" id="update_name" value=$name>
+                </div>
+                <div class="mb-3">
+                    <label for="update_surname" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" name="update_surname" id="update_surname" value=$surname>
+                </div>
+                <div class="mb-3">
+                    <label for="update_phone" class="form-label">Teléfono</label>
+                    <input type="tel" class="form-control" name="update_phone" id="update_phone" value=$phone>
+                </div>
+                <div class="mb-3">
+                    <label for="update_birth_date" class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" name="update_birth_date" id="update_birth_date" value=$birth_date>
+                </div>
+                <div class="mb-3">
+                    <label for="update_email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" name="update_email" id="update_email" value=$email>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-primary" name="update_insert" value="Enviar">
+                </div>
+                <input type="hidden" name="contacts" value=$vectorString>
+            </form>
+        END;
+
     }
 
 ?>
