@@ -47,7 +47,6 @@
                         insert($url, $contacts);
                         break;
                     case "show":
-                        // var_dump($_REQUEST);
                         show($url, $contacts);
                         break;
                     default:

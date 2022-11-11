@@ -78,7 +78,6 @@
     }
 
     function comprobe_insert($keys){
-        $stop = false;
 
         unset($_REQUEST["submit_insert"]);
         $keys_insert = ["dni", "name", "surname", "phone", "birth_date", "email", "insert_date", "block", "contacts"];
@@ -86,24 +85,18 @@
         for ($k = 0; $k < count($keys_insert); $k++){
             $key_insert = $keys_insert[$k];
 
-            // || empty($_REQUEST["$key_insert"])
-            if (!isset($_REQUEST["$key_insert"]) || count(array_diff(array_keys($_REQUEST), $keys_insert)) !== 0){
-                echo "<p>Datos incorrectos</p>";
-                $stop = true;
-            }
-        }
-
-        if (!$stop){
-
-            if (!validate_dni($_REQUEST["dni"]) || !validate_phone($_REQUEST["phone"]) || !validate_birth_date($_REQUEST["birth_date"]) || !validate_email($_REQUEST["email"])){
-                echo "<p>Datos incorrectos</p>";
+            if (!isset($_REQUEST["$key_insert"]) || count(array_diff(array_keys($_REQUEST), $keys_insert)) !== 0 || empty($_REQUEST["$key_insert"])){
+                return false;
 
             } else {
-                return true;
+                if (!validate_dni($_REQUEST["dni"]) || !validate_phone($_REQUEST["phone"]) || !validate_birth_date($_REQUEST["birth_date"]) || !validate_email($_REQUEST["email"])){
+                    return false;
+
+                } else {
+                    return true;
+                }
             }
-        } 
-        
-        return false;
+        }
     }
 
     function insert_date(){
@@ -146,9 +139,10 @@
                 ]; 
 
                 $contacts[trim(strip_tags($_REQUEST["dni"]))] = $contact_value;
+                return true;
 
             } else {
-                echo "<p>Datos incorrectos</p>";
+                return false;
             }
         } 
     }
@@ -164,15 +158,18 @@
 
     function block($url, $contacts, $dni){
         $contacts[$dni]["block"] = true;
-        return_contacts($contacts);
+        $contacts = json_encode($contacts);
+            header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
     }
 
     function return_contacts($contacts){
-        validate($contacts);
+        if (!validate($contacts)){
+            createTitle("Hay datos incorrectos");
 
-        $contacts = json_encode($contacts);
-
-        header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
+        } else {
+            $contacts = json_encode($contacts);
+            header("Location:http://localhost:3000/php_04-11-2022/agenda.php?contacts=" . $contacts);
+        }
     }
 
     function almacenar_fichero($url, $contacts, $dni){

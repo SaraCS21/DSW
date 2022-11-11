@@ -1,7 +1,7 @@
 <?php
     function createFooter(){
         print <<<END
-                    <footer>
+                    <footer class="w-100 p-4 text-center">
                         Todos los derechos reservados | Sara del Pino Cabrera Sánchez | 2ºDAW - DSW
                     </footer>
 

@@ -41,81 +41,87 @@
     }
 
     function show($url, $contacts, $option = ""){
-        createTitle("Mostrar todos los contactos");
-        $vectorString = json_encode($contacts);
 
-        if ($option === "organize_dni"){
-            ksort($contacts);
+        if ($contacts === []){
+            createTitle("No hay contactos que mostrar");
 
-        } else if ($option === "organize_name"){
-            uasort($contacts, function ($a, $b) {
-                return strcmp($a["name"], $b["name"]);
-            });
+        } else {
+            createTitle("Mostrar contactos");
+            $vectorString = json_encode($contacts);
 
-        } else if ($option === "organize_surname"){
-            uasort($contacts, function ($a, $b) {
-                return strcmp($a["surname"], $b["surname"]);
-            });
-        }
+            if ($option === "organize_dni"){
+                ksort($contacts);
 
-        print <<<END
-            <form method="get" action=$url class="d-flex mt-3 justify-content-end w-50">
-                <select class="form-select me-3 w-25" name="select">
-                    <option selected>Selecciona para ordenar</option>
-                    <option value="organize_dni">DNI</option>
-                    <option value="organize_name">Nombre</option>
-                    <option value="organize_surname">Apellido</option>
-                </select>
-                <input type="submit" name="organize" value="Ordenar" class="btn btn-outline-primary me-3">   
-                <input type="hidden" name="contacts" value=$vectorString>
-            </form>
-        END;
+            } else if ($option === "organize_name"){
+                uasort($contacts, function ($a, $b) {
+                    return strcmp($a["name"], $b["name"]);
+                });
 
-        echo "<table class='table table-striped w-50 mt-3'>";
-
-        print <<<END
-            <tr>
-                <th>DNI</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Teléfono</th>
-                <th>Fecha de nacimiento</th>
-                <th>Correo electrónico</th>
-                <th>Fecha de inserción</th>
-                <th></th>
-                <th>Otras acciones</th>
-            </tr>
-        END;
-
-
-        foreach ($contacts as $key => $contact) {
-            if (!$contact["block"]){
-
-                echo "<tr>";
-                echo "<td>$key</td>";
-
-                $contact["insert_date"] = format_date($contact["insert_date"]);
-                $contact["name"] = str_replace("_", " ", $contact["name"]);
-                $contact["surname"] = str_replace("_", " ", $contact["surname"]);
-    
-                foreach ($contact as $value) {
-                    echo "<td>$value</td>";
-                }
-                print <<<END
-                    <td>
-                        <form method="get" action=$url> 
-                            <input type="submit" name="update" value="Actualizar" class="btn btn-outline-primary me-3">                        
-                            <input type="submit" name="block" value="Bloquear" class="btn btn-outline-primary me-3">                        
-                            <input type="submit" name="upload" value="Subir datos extras" class="btn btn-outline-primary me-3">
-                            <input type="hidden" name="dni_active" value=$key>    
-                            <input type="hidden" name="contacts" value=$vectorString>                    
-                        </form>
-                    </td>
-                END;
-                echo "</tr>";
+            } else if ($option === "organize_surname"){
+                uasort($contacts, function ($a, $b) {
+                    return strcmp($a["surname"], $b["surname"]);
+                });
             }
+
+            print <<<END
+                <form method="get" action=$url class="d-flex mt-4 mb-4 justify-content-end w-75">
+                    <select class="form-select me-3 w-25" name="select">
+                        <option selected>Selecciona para ordenar</option>
+                        <option value="organize_dni">DNI</option>
+                        <option value="organize_name">Nombre</option>
+                        <option value="organize_surname">Apellido</option>
+                    </select>
+                    <input type="submit" name="organize" value="Ordenar" class="btn btn-outline-primary">   
+                    <input type="hidden" name="contacts" value=$vectorString>
+                </form>
+            END;
+
+            echo "<table class='table table-striped w-75 mt-3'>";
+
+            print <<<END
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Teléfono</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Correo electrónico</th>
+                    <th>Fecha de inserción</th>
+                    <th></th>
+                    <th>Otras acciones</th>
+                </tr>
+            END;
+
+
+            foreach ($contacts as $key => $contact) {
+                if (!$contact["block"]){
+
+                    echo "<tr>";
+                    echo "<td>$key</td>";
+
+                    $contact["insert_date"] = format_date($contact["insert_date"]);
+                    $contact["name"] = str_replace("_", " ", $contact["name"]);
+                    $contact["surname"] = str_replace("_", " ", $contact["surname"]);
+        
+                    foreach ($contact as $value) {
+                        echo "<td>$value</td>";
+                    }
+                    print <<<END
+                        <td>
+                            <form method="get" action=$url>    
+                                <button type="submit" name="update" value="Actualizar" class="btn btn-primary me-3" alt="actualizar"><i class='bx bxs-edit-alt' style='color:#ffffff' ></i></button>
+                                <button type="submit" name="block" value="Bloquear" class="btn btn-primary me-3"><i class='bx bx-block' style='color:#ffffff'></i></button>
+                                <button type="submit" name="upload" value="Subir datos extras" class="btn btn-primary me-3"><i class='bx bx-upload' style='color:#ffffff'></i></button>
+                                <input type="hidden" name="dni_active" value=$key>    
+                                <input type="hidden" name="contacts" value=$vectorString>                    
+                            </form>
+                        </td>
+                    END;
+                    echo "</tr>";
+                }
+            }
+            echo "</table>";
         }
-        echo "</table>";
     }
 
     function upload($url, $contacts, $dni){
@@ -123,10 +129,9 @@
         $vectorString = json_encode($contacts);
 
         print <<<END
-            <form method="get" action=$url class="w-50" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="file" class="form-label">Fichero</label>
-                    <input type="file" class="form-control" id="file" name="file">
+            <form method="get" action=$url class="w-50 mt-4" enctype="multipart/form-data">
+                <div class="mb-3 w-75 d-flex flex-row">
+                    <input type="file" class="form-control w-75 me-3" id="file" name="file">
                     <input type="hidden" name="MAX_FILE_SIZE" value="1000000" />
                     <input type="submit" name="upload_file" value="Enviar" class="btn btn-outline-primary me-3">                        
                 </div>
