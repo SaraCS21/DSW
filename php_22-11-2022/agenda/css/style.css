@@ -1,0 +1,14 @@
+*{
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+footer{
+    position: fixed;
+    bottom: 0;
+
+    background-color: #0d6efd;
+    color: white;
+}

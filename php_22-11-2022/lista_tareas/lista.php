@@ -1,15 +1,15 @@
 <?php
     session_start();
-
-    if (isset($_REQUEST["delete"])){
-        $pos = array_search($_REQUEST["delete"], $_SESSION["tasks"]);
-        print_r($pos);
-
-        unset($_SESSION["tasks"][$pos]);
-    }
+    print_r($_SESSION["tasks"]);
+    $url = $_SERVER["PHP_SELF"];
 
     if ($_SESSION["tasks"] === [] || isset($_REQUEST["return"])){
         Header("Location: formulario.php");
+    }
+
+    if (isset($_REQUEST["delete"])){
+        $pos = array_search($_REQUEST["delete"], $_SESSION["tasks"]);
+        unset($_SESSION["tasks"][$pos]);
     }
 ?>
 
@@ -26,7 +26,7 @@
     </head>
     <body>
         
-        <form method="post" class="w-100 mt-5 d-flex justify-content-center flex-wrap">
+        <form method="post" action="<?= $url ?>" class="w-100 mt-5 d-flex justify-content-center flex-wrap">
             <ol class="list-group list-group-numbered w-25">
                 <?php
                     foreach ($_SESSION["tasks"] as $task) {
