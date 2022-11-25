@@ -124,13 +124,9 @@
         if (in_array("submit_insert", $keys)){
             if (comprobe_insert($keys)) {
 
-                // Al pasar parámetros con espacios y enviarlos por url hay pérdida de información.
-                // Cambio los posibles espacios que me puedan llegar por "_" y más adelante los vuelvo a pasar a espacios.
                 $contact_value = [
-                    "name" => str_replace(" ", "_", trim(strip_tags($_REQUEST["name"]))),
-                    //"name" => trim(strip_tags($_REQUEST["name"])),
-                    "surname" => str_replace(" ", "_", trim(strip_tags($_REQUEST["surname"]))),
-                    //"surname" => trim(strip_tags($_REQUEST["surname"])),
+                    "name" => trim(strip_tags($_REQUEST["name"])),
+                    "surname" => trim(strip_tags($_REQUEST["surname"])),
                     "phone" => trim(strip_tags($_REQUEST["phone"])),
                     "birth_date" => trim(strip_tags($_REQUEST["birth_date"])),
                     "email" => trim(strip_tags($_REQUEST["email"])),
@@ -182,10 +178,8 @@
     function modifiy_values($url){
         $contacts = $_SESSION["contacts"];
         $contact_value = [
-            "name" => str_replace(" ", "_", trim(strip_tags($_REQUEST["update_name"]))),
-            //"name" => trim(strip_tags($_REQUEST["update_name"])),
-            "surname" => str_replace(" ", "_", trim(strip_tags($_REQUEST["update_surname"]))),
-            //"surname" => trim(strip_tags($_REQUEST["update_surname"])),
+            "name" => trim(strip_tags($_REQUEST["update_name"])),
+            "surname" => trim(strip_tags($_REQUEST["update_surname"])),
             "phone" => trim(strip_tags($_REQUEST["update_phone"])),
             "birth_date" => trim(strip_tags($_REQUEST["update_birth_date"])),
             "email" => trim(strip_tags($_REQUEST["update_email"])),
