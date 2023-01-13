@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="form-group mt-3">
-                    <input type="submit" name="submit" class="btn btn-primary" value="Enviar">
+                    <input type="submit" name="submit" class="btn btn-success" value="Crear">
                     <a class="btn btn-primary" href="index.php">Regresar al inicio</a>
                 </div>
             </form>
