@@ -17,28 +17,20 @@
             return $this->imaginario;
         }
 
-        public function getComplexNumber(){
+        public function __toString() :string {
             if ($this->imaginario < 0){
-                echo $this->real . $this->imaginario . "i";
+                return $this->real . $this->imaginario . "i";
 
             } else {
-                echo $this->real . "+" . $this->imaginario . "i";
+                return $this->real . "+" . $this->imaginario . "i";
             }
         }
 
-        public function sumComplexNumber($number){
+        public function sum($number){
             $real = $this->real + $number->getReal();
             $imaginario = $this->imaginario + $number->getImaginario();
 
             return [$real, $imaginario];
         }
     }
-
-    $number1 = new ComplexNumber(2, -3);
-    $number2 = new ComplexNumber(2, -3);
-
-    $result = $number2->sumComplexNumber($number1);
-    $number3 = new ComplexNumber($result[0], $result[1]);
-    $number3->getComplexNumber();
-
 ?>
