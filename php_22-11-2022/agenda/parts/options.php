@@ -3,7 +3,7 @@
         createTitle("Insertar un contacto");
 
         print <<<END
-            <form method="get" action=$url class="w-50">
+            <form method="post" action=$url class="w-50">
                 <div class="mb-3">
                     <label for="dni" class="form-label">DNI</label>
                     <input type="text" class="form-control" id="dni" name="dni">
@@ -62,7 +62,7 @@
             }
 
             print <<<END
-                <form method="get" action=$url class="d-flex mt-4 mb-4 justify-content-end w-75">
+                <form method="post" action=$url class="d-flex mt-4 mb-4 justify-content-end w-75">
                     <select class="form-select me-3 w-25" name="select">
                         <option selected>Selecciona para ordenar</option>
                         <option value="organize_dni">DNI</option>
@@ -97,15 +97,15 @@
                     echo "<td>$key</td>";
 
                     $contact["insert_date"] = format_date($contact["insert_date"]);
-                    $contact["name"] = str_replace("_", " ", $contact["name"]);
-                    $contact["surname"] = str_replace("_", " ", $contact["surname"]);
+                    // $contact["name"] = str_replace("_", " ", $contact["name"]);
+                    // $contact["surname"] = str_replace("_", " ", $contact["surname"]);
         
                     foreach ($contact as $value) {
                         echo "<td>$value</td>";
                     }
                     print <<<END
                         <td>
-                            <form method="get" action=$url>    
+                            <form method="post" action=$url>    
                                 <button type="submit" name="update" value="Actualizar" class="btn btn-primary me-3" alt="actualizar"><i class='bx bxs-edit-alt' style='color:#ffffff' ></i></button>
                                 <button type="submit" name="block" value="Bloquear" class="btn btn-primary me-3"><i class='bx bx-block' style='color:#ffffff'></i></button>
                                 <button type="submit" name="upload" value="Subir datos extras" class="btn btn-primary me-3"><i class='bx bx-upload' style='color:#ffffff'></i></button>
@@ -125,7 +125,7 @@
         $contacts = $_SESSION["contacts"];
 
         print <<<END
-            <form method="get" action=$url class="w-50 mt-4" enctype="multipart/form-data">
+            <form method="post" action=$url class="w-50 mt-4" enctype="multipart/form-data">
                 <div class="mb-3 w-75 d-flex flex-row">
                     <input type="file" class="form-control w-75 me-3" id="file" name="file">
                     <input type="hidden" name="MAX_FILE_SIZE" value="1000000" />
@@ -148,18 +148,18 @@
         $email = $update_contact["email"];
 
         print <<<END
-            <form method="get" action=$url class="w-50">
+            <form method="post" action=$url class="w-50">
                 <div class="mb-3">
                     <label for="update_dni" class="form-label">DNI</label>
                     <input type="text" class="form-control" id="update_dni" name="update_dni" value=$dni>
                 </div>
                 <div class="mb-3">
                     <label for="update_name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="update_name" id="update_name" value=$name>
+                    <input type="text" class="form-control" name="update_name" id="update_name" value="$name">
                 </div>
                 <div class="mb-3">
                     <label for="update_surname" class="form-label">Apellidos</label>
-                    <input type="text" class="form-control" name="update_surname" id="update_surname" value=$surname>
+                    <input type="text" class="form-control" name="update_surname" id="update_surname" value="$surname">
                 </div>
                 <div class="mb-3">
                     <label for="update_phone" class="form-label">Teléfono</label>

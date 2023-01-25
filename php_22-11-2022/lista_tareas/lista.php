@@ -1,15 +1,14 @@
 <?php
     session_start();
-    print_r($_SESSION["tasks"]);
     $url = $_SERVER["PHP_SELF"];
-
-    if ($_SESSION["tasks"] === [] || isset($_REQUEST["return"])){
-        Header("Location: formulario.php");
-    }
 
     if (isset($_REQUEST["delete"])){
         $pos = array_search($_REQUEST["delete"], $_SESSION["tasks"]);
         unset($_SESSION["tasks"][$pos]);
+    }
+
+    if ($_SESSION["tasks"] === [] || isset($_REQUEST["return"])){
+        Header("Location: formulario.php");
     }
 ?>
 

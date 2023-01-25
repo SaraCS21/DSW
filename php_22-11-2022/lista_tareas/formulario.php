@@ -11,12 +11,12 @@
             $continue = false;
         }
         
-    if ($continue){
-        array_push($tasks, $_REQUEST["task"]);
+        if ($continue){
+            array_push($tasks, strip_tags(trim($_REQUEST["task"])));
 
-        $_SESSION["tasks"] = $tasks;
-        Header("Location: lista.php");
-    } 
+            $_SESSION["tasks"] = $tasks;
+            Header("Location: lista.php");
+        } 
     }
 
 ?>
